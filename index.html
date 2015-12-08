@@ -4,22 +4,30 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-  <title>D3 Übung</title>
+  <title>I See Streams</title>
   <meta name="description" content="something">
   <meta name="author" content="miduku">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" rel="stylesheet">
   <link href="assets/css/style.css" rel="stylesheet">
 
 </head>
 <body>
   <div id="container">
+    <div class="content">
+      <header>
+        <h1>I See Streams</h1>
+        <p>Twitter Streams under the International Space Station</p>
+      </header>
+    </div>
+
+    <div class="draw"></div>
 
 
   </div>
-  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
-  <script src="//d3js.org/topojson.v1.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-  <script src="http://api.open-notify.org/iss-now.json?callback=getData"></script>
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="//d3js.org/topojson.v1.min.js"></script>
 
   <script src="assets/js/scripts.js"></script>
 </body>

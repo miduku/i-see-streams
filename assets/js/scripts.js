@@ -12,26 +12,31 @@ var velocity = .005,
     radius = Math.sqrt(width*height)/2,
     scale = radius;
 
-var globe = {type: "Sphere"};
+var globe = {type: "Sphere"},
+    iss,
+    latISS,
+    lonISS;
 
 var color = {
   bright: '#fff',
   dark: '#263238'
 };
 
+
 // create CANVAS tag
-var canvas = d3.select('#container')
+var canvas = d3.select('.draw')
   .append('canvas')
   .attr('width', width)
-  .attr('height', height);
+  .attr('height', height)
+  .attr('class', 'globe');
 
 var context = canvas.node().getContext('2d');
 
 
 // choose geo projection type
 var projection = d3.geo.orthographic()
-  .translate([width/2, height/2])
-  // .translate([width/2, height + height/6])
+  // .translate([width/2, height/2])
+  .translate([width/2, height + height/6])
   .scale(scale)
   .clipAngle(90)
   .precision(0.5);
@@ -41,13 +46,20 @@ var geoPath = d3.geo.path()
   .projection(projection)
   .context(context);
 
+// load ISS JSON from open-notify.org every 5 seconds
+// function dataISS() {
+//   $.getJSON('http://api.open-notify.org/iss-now.json?callback=?', function (iss) {
+//     latISS = iss.iss_position.latitude;
+//     lonISS = iss.iss_position.longitude;
+//   });
 
-// load data asynchroniously with queue.js
-
+//   setInterval(dataISS, 5000);
+//   // return latISS;
+//   console.log(latISS);
+// }
 
 // get data from json
 d3.json('assets/json/world-110m.json', function(error, dataWorld) {
-  d3.json('//api.open-notify.org/iss-now.json', function(dataISS) {
     if (error) {
       throw error;
     }
@@ -59,8 +71,8 @@ d3.json('assets/json/world-110m.json', function(error, dataWorld) {
     d3.timer(function(elapsed) {
       // setInterval(getISS(), 5000);
 
+      // projection.rotate([lonISS, latISS, 0]); // test rotation
       projection.rotate([-velocity * elapsed, 0, 90]); // test rotation
-      // projection.rotate([-velocity * elapsed, 0, 90]);
 
       // don't draw rectangle
       context.clearRect(0, 0, width, height);
@@ -90,9 +102,8 @@ d3.json('assets/json/world-110m.json', function(error, dataWorld) {
       context.strokeStyle = color.dark;
       context.stroke();
 
-      // console.log(ticker);
+      // console.log(dataISS);
     });
-  });
 });
 
-  // console.log(geoPath);
+  console.log(dataISS(latISS));
