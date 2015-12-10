@@ -1,6 +1,11 @@
+(function ($, window, document, undefined) {
+
+  'use strict';
+
 /*
 * d3
 */
+// stage
 var w = window,
     windowWidth = w.innerWidth,
     windowHeight = w.innerHeight;
@@ -8,19 +13,24 @@ var w = window,
 var width = windowWidth,
     height = windowHeight;
 
-var velocity = .005,
+// globe
+var globe = {type: 'Sphere'},
+    velocity = 0.005,
     radius = Math.sqrt(width*height)/2,
     scale = radius;
 
-var globe = {type: "Sphere"},
-    iss,
-    latISS,
-    lonISS;
-
+// colors
 var color = {
   bright: '#fff',
   dark: '#263238'
 };
+
+// JSONP data stuff
+var dataISS = null,
+    urlISS = 'http://api.open-notify.org/iss-now.json?callback=?',
+    latISS = null,
+    lonISS = null,
+    tick = 0;
 
 
 // create CANVAS tag
@@ -46,33 +56,35 @@ var geoPath = d3.geo.path()
   .projection(projection)
   .context(context);
 
-// load ISS JSON from open-notify.org every 5 seconds
-// function dataISS() {
-//   $.getJSON('http://api.open-notify.org/iss-now.json?callback=?', function (iss) {
-//     latISS = iss.iss_position.latitude;
-//     lonISS = iss.iss_position.longitude;
-//   });
-
-//   setInterval(dataISS, 5000);
-//   // return latISS;
-//   console.log(latISS);
-// }
-
-// get data from json
+// get data from local JSON for globe
 d3.json('assets/json/world-110m.json', function(error, dataWorld) {
     if (error) {
       throw error;
     }
 
-
     var land = topojson.feature(dataWorld, dataWorld.objects.land);
     var borders = topojson.mesh(dataWorld, dataWorld.objects.countries, function(a, b) { return a != b; });
 
-    d3.timer(function(elapsed) {
-      // setInterval(getISS(), 5000);
 
-      // projection.rotate([lonISS, latISS, 0]); // test rotation
-      projection.rotate([-velocity * elapsed, 0, 90]); // test rotation
+    // Get API from open-notify.org every 5 seconds and
+    // write to local storage with sessionStorage.
+    // Project the data and rotate, too.
+    setInterval(function() {
+      console.log('update sessionStorage from open notify API');
+
+      $.getJSON(urlISS, function(storedData) {
+        sessionStorage.setItem('storedData', JSON.stringify(storedData));
+      });
+
+      // get data from local storage
+      dataISS = JSON.parse(sessionStorage.getItem('storedData'));
+        latISS = dataISS.iss_position.latitude;
+        lonISS = dataISS.iss_position.longitude;
+
+      console.log(dataISS);
+
+      projection.rotate([lonISS, latISS, 0]); // test rotation
+      // projection.rotate([-velocity * elapsed, 0, 90]); // test rotation
 
       // don't draw rectangle
       context.clearRect(0, 0, width, height);
@@ -101,9 +113,13 @@ d3.json('assets/json/world-110m.json', function(error, dataWorld) {
       context.lineWidth = 0.5;
       context.strokeStyle = color.dark;
       context.stroke();
+    }, 5000);
 
-      // console.log(dataISS);
-    });
+    // d3.timer(function(elapsed) {
+
+    // });
 });
 
-  console.log(dataISS(latISS));
+// console.log(dataISS);
+
+})(jQuery, window, document);
