@@ -36,8 +36,6 @@ var dataISS = null,
     lonISS = null,
     latISSPast = 0,
     lonISSPast = 0,
-    rotationISS = 90,
-    rotationISSPast = 0,
     tick = 0;
 
 
@@ -48,7 +46,7 @@ var canvas = d3.select('.draw')
   .attr('height', height)
   .attr('class', 'draw-globe');
 
-var context = canvas.node().getContext('2d');
+var ctx = canvas.node().getContext('2d');
 
 
 // // choose geo projection type
@@ -63,8 +61,7 @@ var context = canvas.node().getContext('2d');
 //   .precision(0.5);
 
 // choose geo projection type
-var projection = d3.geo.orthographic()
-  // .center([50,50])
+var prj = d3.geo.orthographic()
   .translate([width/2, height/2])
   // .translate([width/2, height + height/6])
   .scale(scale)
@@ -73,8 +70,8 @@ var projection = d3.geo.orthographic()
 
 // create geographic shapes from projection and context
 var geoPath = d3.geo.path()
-  .projection(projection)
-  .context(context);
+  .projection(prj)
+  .context(ctx);
 
 // get data from local JSON for globe
 d3.json('assets/json/world-110m.json', function(error, dataWorld) {
@@ -96,7 +93,6 @@ d3.json('assets/json/world-110m.json', function(error, dataWorld) {
       // console.log(lonISSPast);
       latISSPast = latISS;
       lonISSPast = lonISS;
-      rotationISSPast = rotationISS;
       // console.log(lonISS);
       getDataISS();
 
@@ -125,45 +121,44 @@ d3.json('assets/json/world-110m.json', function(error, dataWorld) {
       //     .duration(4999)
       //     .ease('linear')
       //     .tween('rotate', function () {
-            // projection.rotate([52.5167, 13.3833, 0]); // -> Berlin Coords
-            projection.rotate([lonISS, latISS, bearing]); // test rotation
+            prj.rotate([lonISS, latISS, bearing]); // test rotation
             // projection.rotate([-velocity * elapsed, 0, 90]); // test rotation
 
             // don't draw rectangle
-            context.clearRect(0, 0, width, height);
+            ctx.clearRect(0, 0, width, height);
 
             // outline and fill globe
-            context.beginPath();
+            ctx.beginPath();
             geoPath(globe);
-            context.fillStyle = color.dark;
-            context.fill();
-            context.lineWidth = 2;
-            context.strokeStyle = color.dark;
-            context.stroke();
+            ctx.fillStyle = color.dark;
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = color.dark;
+            ctx.stroke();
 
             // fill landmass
-            context.beginPath();
+            ctx.beginPath();
             geoPath(land);
-            context.fillStyle = color.bright;
-            context.fill();
-            context.lineWidth = 1;
-            context.strokeStyle = color.dark;
-            context.stroke();
+            ctx.fillStyle = color.bright;
+            ctx.fill();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = color.dark;
+            ctx.stroke();
 
             // draw lines of country borders
-            context.beginPath();
+            ctx.beginPath();
             geoPath(borders);
-            context.lineWidth = 0.5;
-            context.strokeStyle = color.dark;
-            context.stroke();
+            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = color.dark;
+            ctx.stroke();
 
-            // context.beginPath();
+            // ctx.beginPath();
             // path({type: "GeometryCollection", geometries: geoCircles});
-            // context.fillStyle = color.dark;
-            // context.fill();
-            // context.lineWidth = 0.5;
-            // context.strokeStyle = color.dark;
-            // context.stroke();
+            // ctx.fillStyle = color.dark;
+            // ctx.fill();
+            // ctx.lineWidth = 0.5;
+            // ctx.strokeStyle = color.dark;
+            // ctx.stroke();
 
       //   }); // END transition
       // }); // END timer
@@ -184,5 +179,10 @@ function getDataISS () {
     // latISS = 35.5 * -1;
 }
 
+function getDataTwitter () {
+  $.getJSON(urlTwitter, function(dataTwitter) {
+      console.log(dataTwitter);
+  });
+}
 
 })(jQuery, d3, window, document);
