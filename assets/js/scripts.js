@@ -14,19 +14,20 @@ var width = windowWidth,
     height = windowHeight;
 
 // globe
-var globe = {type: 'Sphere'},
-    circle = {type: "GeometryCollection", geometries: 'circles'},
+var globe = {type: "Sphere"},
+    circle = {type: "GeometryCollection", geometries: "circles"},
+    point = {type: "Point"},
     velocity = 0.005,
-    // radius = Math.sqrt(width*height)/3,
-    radius = Math.sqrt(width*height)/2,
+    radius = Math.sqrt(width*height)/2.5,
+    // radius = Math.sqrt(width*height)/2,
     scale = radius,
     distance = 2;
 
 // colors
 var color = {
-  bright: '#fff',
-  darkest: '#263238',
-  dark: '#999'
+  primary: '#263238',
+  secondary: '#999',
+  tertiary: '#fff'
 };
 
 // JSONP data stuff
@@ -39,39 +40,37 @@ var dataISS = null,
     tick = 0;
 
 
-// create CANVAS tag
-var canvas = d3.select('.draw')
-  .append('canvas')
+// choose geo projection type
+var prj = d3.geo.orthographic()
+  // .translate([width/2, height/2])
+  .translate([width/2, height/2 + height/4])
+  .scale(scale)
+  .clipAngle(90)
+  .precision(0.3);
+
+
+// create geographic shapes from projection and context
+var geoPath = d3.geo.path()
+  .projection(prj);
+
+
+// create svg container
+var svg = d3.select('.draw')
+  .append('svg')
   .attr('width', width)
   .attr('height', height)
   .attr('class', 'draw-globe');
 
-var ctx = canvas.node().getContext('2d');
+var svgGlobe = svg.append('g')
+  .attr('class', 'globe');
 
+// add water
+svgGlobe.append('path')
+  .datum(globe)
+  .attr('d', geoPath)
+  .attr('fill', color.secondary)
+  .attr('stroke', color.secondary);
 
-// // choose geo projection type
-// var projection = d3.geo.satellite()
-//   .distance(distance)
-//   .scale(scale*2)
-//   .tilt(40)
-//   // .center([0, -7])
-//   // .translate([width/2, height/2])
-//   // .translate([width/2, height + height/8])
-//   .clipAngle(Math.acos(1 / distance) * 180 / Math.PI - 1e-6)
-//   .precision(0.5);
-
-// choose geo projection type
-var prj = d3.geo.orthographic()
-  .translate([width/2, height/2])
-  // .translate([width/2, height + height/6])
-  .scale(scale)
-  .clipAngle(90)
-  .precision(0.5);
-
-// create geographic shapes from projection and context
-var geoPath = d3.geo.path()
-  .projection(prj)
-  .context(ctx);
 
 // get data from local JSON for globe
 d3.json('assets/json/world-110m.json', function(error, dataWorld) {
@@ -82,24 +81,40 @@ d3.json('assets/json/world-110m.json', function(error, dataWorld) {
     getDataISS();
 
     var land = topojson.feature(dataWorld, dataWorld.objects.land);
-    var borders = topojson.mesh(dataWorld, dataWorld.objects.countries, function(a, b) { return a != b; });
+    var borders = topojson.mesh(dataWorld, dataWorld.objects.countries, function(a, b) { return a !== b; });
 
+    // add land
+    svgGlobe.append('path')
+      .datum(land)
+      .attr('class', 'land')
+      .attr('d', geoPath)
+      .attr('fill', color.tertiary);
 
-    // Get API from open-notify.org every 5 seconds and
-    // write to local storage with sessionStorage.
-    // Project the data and rotate, too.
+    // add borders
+    svgGlobe.append('path')
+      .datum(borders)
+      .attr('class', 'borders')
+      .attr('d', geoPath)
+      .attr('fill', 'none')
+      .attr('stroke-width', 0.5)
+      .attr('stroke', color.secondary);
+
+    // add circle
+
+    /*
+    * Get API from open-notify.org every 5 seconds and
+    * write to local storage with sessionStorage.
+    * Project the data and rotate, too.
+    */
     setInterval(function() {
       console.log('update sessionStorage from open notify API');
       // console.log(lonISSPast);
       latISSPast = latISS;
       lonISSPast = lonISS;
       // console.log(lonISS);
-      getDataISS();
 
-      // var geoCircle = d3.geo.circle()
-      //   .origin([lonISS, latISS])
-      //   .angle(500);
-      // var geoCircles = [geoCircle()];
+      // get data from ISS
+      getDataISS();
 
 
       // bearing
@@ -115,55 +130,22 @@ d3.json('assets/json/world-110m.json', function(error, dataWorld) {
 
 
 
+      // rotate globe
+      prj.rotate([lonISS, latISS, bearing]); // test rotation
 
-      // d3.timer(function(elapsed) {
-      //   d3.transition()
-      //     .duration(4999)
-      //     .ease('linear')
-      //     .tween('rotate', function () {
-            prj.rotate([lonISS, latISS, bearing]); // test rotation
-            // projection.rotate([-velocity * elapsed, 0, 90]); // test rotation
+      // redraw land
+      svgGlobe.selectAll('.land')
+        .attr('d', geoPath);
 
-            // don't draw rectangle
-            ctx.clearRect(0, 0, width, height);
+      // redraw borders
+      svgGlobe.selectAll('.borders')
+        .attr('d', geoPath);
 
-            // outline and fill globe
-            ctx.beginPath();
-            geoPath(globe);
-            ctx.fillStyle = color.dark;
-            ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = color.dark;
-            ctx.stroke();
+      // redraw point
 
-            // fill landmass
-            ctx.beginPath();
-            geoPath(land);
-            ctx.fillStyle = color.bright;
-            ctx.fill();
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = color.dark;
-            ctx.stroke();
 
-            // draw lines of country borders
-            ctx.beginPath();
-            geoPath(borders);
-            ctx.lineWidth = 0.5;
-            ctx.strokeStyle = color.dark;
-            ctx.stroke();
-
-            // ctx.beginPath();
-            // path({type: "GeometryCollection", geometries: geoCircles});
-            // ctx.fillStyle = color.dark;
-            // ctx.fill();
-            // ctx.lineWidth = 0.5;
-            // ctx.strokeStyle = color.dark;
-            // ctx.stroke();
-
-      //   }); // END transition
-      // }); // END timer
+      // redraw circle
     }, 5000); // END setInterval
-
 });
 
 function getDataISS () {
