@@ -167,10 +167,4 @@ function getDataISS () {
   socket.send(dataISS);
 }
 
-function getDataTwitter () {
-  $.getJSON(urlTwitter, function(dataTwitter) {
-      console.log(dataTwitter);
-  });
-}
-
 })(jQuery, d3, window, document);
