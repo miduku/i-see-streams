@@ -29,6 +29,8 @@ Desktop.ini
 $RECYCLE.BIN/
 gh-pages/
 
-
 ## Sublime Text
 *.sublime-workspace
+
+## App
+config.json
