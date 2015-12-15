@@ -9,6 +9,8 @@ var server = http.createServer(app);
 var socket = io.listen(server);
 var port = 3000;
 
+var latISS, lonISS;
+
 var config = require('./config.json'); // load configs
 console.log(config.twitter_oauth);
 
@@ -36,13 +38,18 @@ socket.on('connection', function(client) {
   // log what the client is sending
   client.on('message', function(message) {
     // console.log(message);
-    var latISS = message.iss_position.latitude;
-    var lonISS = message.iss_position.longitude;
-    console.log(latISS);
+    latISS = message.iss_position.latitude;
+    lonISS = message.iss_position.longitude;
+    // console.log(latISS);
+
+  }); // END client
+}); // END socket
+
 
 var timer = setInterval(function() {
   T.get('search/tweets', {
-    // q: 'hund',
+    q: 'hund',
+    // geocode: ['52', '13', '100km'],
     geocode: [latISS, lonISS, '100km'],
     count: 2
   },
@@ -59,7 +66,7 @@ var timer = setInterval(function() {
         else {
           console.log('wrote file');
           clearInterval(timer);
-          // counter = 0;
+          counter = 0;
         }
       });
     }
@@ -67,9 +74,6 @@ var timer = setInterval(function() {
   });
 
 }, 500); // END timer
-
-  }); // END client
-}); // END socket
 
 
 server.listen(port, function() {
