@@ -1,0 +1,25 @@
+{
+  "name": "i-see-streams",
+  "version": "1.0.0",
+  "description": "University of Applied Sciences Potsdam; Course: 11EG-B - Eingabe/Ausgabe; WiSe 2015/16; Project 02",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miduku/i-see-streams.git"
+  },
+  "author": "Dustin Kummer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miduku/i-see-streams/issues"
+  },
+  "homepage": "https://github.com/miduku/i-see-streams#readme",
+  "dependencies": {
+    "express": "^4.13.3",
+    "simpler-config": "0.0.4",
+    "socket.io": "^1.3.7",
+    "twit": "^2.1.1"
+  }
+}

@@ -39,6 +39,11 @@ var dataISS = null,
     lonISSPast = 0,
     tick = 0;
 
+// socket.io
+var socket = new io();
+  socket.connect('http://localhost:3000', {
+  autoConnect: true
+});
 
 // choose geo projection type
 var prj = d3.geo.orthographic()
@@ -155,10 +160,11 @@ function getDataISS () {
 
   // get data from local storage
   dataISS = JSON.parse(sessionStorage.getItem('storedData'));
-      lonISS = dataISS.iss_position.longitude * -1;
-      latISS = dataISS.iss_position.latitude * -1;
-    // lonISS = -121 * -1;
-    // latISS = 35.5 * -1;
+    lonISS = dataISS.iss_position.longitude * -1;
+    latISS = dataISS.iss_position.latitude * -1;
+
+  // send data to server
+  socket.send(dataISS);
 }
 
 function getDataTwitter () {
