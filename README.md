@@ -30,10 +30,10 @@ Because of my first time using D3 (and consequently my very limited knowledge wi
 
 I managed to get the rotation of the globe, to simulate the "riding" aspect, to work and syncronize it with the data from open-notify.org. This took me quite a while though, since I had tried to output the globe in a "canvas" because of potential performance issues that could have arisen with less powerfull computers. I changed it to "SVG" because I had noticed that the amount of vectors for the globe didn't seem to lower the performance much or at all. Additionally I found working with SVG much easier.
 
-Furthermore I found it difficult working with D3's geo functionalities since the API-Documentation was indeed complete but still confusing. Finding appropriate examples on the web wasn't easy since there weren't all too many or to difficult for me to understand. I am for example still unable to set a dot on the right longitude and latitude coordinated on the globe to represent the current position of the ISS.
+Furthermore I found it difficult working with D3's geo functionalities since the API-Documentation was indeed complete but still confusing. Finding appropriate examples on the web wasn't easy since there weren't all too many or were too difficult for me to understand. I am for example still unable to set a dot at the right longitude and latitude coordinated on the globe to represent the current position of the ISS.
 
 ## Conclusion
-In conclusion I found working with D3 quite fun. 
+In conclusion I actually found working with D3 quite fun. 
 Even though I had many frustrating all nighters trying to get D3's geo functionalities to work and wasn't able to finish the project in time I'd like to think that I have learned much about working with JS, Node.js, SVG, D3, and geo-data alltogether.
 
 I'd like to finish this project in the near future (in this form or another) but have to first better my skills to do so.
