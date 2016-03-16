@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>I-see-streams by miduku</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>I-see-streams</h1>
+        <p>University of Applied Sciences Potsdam; Course: 11EG-B - Eingabe/Ausgabe; WiSe 2015/16; Project 02</p>
+
+        <p class="view"><a href="https://github.com/miduku/i-see-streams">View the Project on GitHub <small>miduku/i-see-streams</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/miduku/i-see-streams/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/miduku/i-see-streams/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/miduku/i-see-streams">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="i-see-streams" class="anchor" href="#i-see-streams" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>I See Streams</h1>
+
+<p><a href="http://www.fh-potsdam.de/">University of Applied Sciences Potsdam</a><br>
+Semester: Winter 2015/16<br>
+Course: <a href="https://incom.org/workspace/6176">11EG-B: Eingabe/Ausgabe (Steel Ant)</a><br>
+Supervisor: <a href="https://fhp.incom.org/profil/270">Fabian Morón Zirfas</a></p>
+
+<p>This Project was realized with <a href="https://nodejs.org/">Node.js</a>, a JavaScript runtime, and <a href="http://d3js.org/">D3</a>, a JavaScript library for manipulating documents based on data, during the course <em>Eingabe/Ausgabe</em> at the <em>University of Applied Sciences Potsdam</em>.</p>
+
+<h2>
+<a id="iss--twitter" class="anchor" href="#iss--twitter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ISS + Twitter</h2>
+
+<p>Our assignment for this project was to visualize data about the <a href="https://www.nasa.gov/mission_pages/station/main/index.html">International Spacestation (ISS)</a> in relation to any other data.</p>
+
+<p>The ISS travels at about the speed of 7.66 km/s (27576 km/h).<br>
+What if its passengers were to only be able to read the Twitter stream live from Twitter users at the current position?<br>
+At positions of a lot of activity, one would have to be a very quick reader to get all the information, since it would only be available for a very short time.</p>
+
+<h2>
+<a id="visualisation" class="anchor" href="#visualisation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visualisation</h2>
+
+<p>The idea for <strong>I See Streams</strong> was to track the position of the ISS with the <a href="http://open-notify.org/Open-Notify-API/">API of open-notify.org</a>, put it in relation with live twitter activity under the ISS' position and visualize it with <a href="http://d3js.org/">D3</a>; More specifically D3's <a href="https://github.com/mbostock/d3/wiki/Geo">geo functionalities</a>.<br>
+The Globe was realized with <em>topoJSON</em> data found <a href="https://github.com/mbostock/topojson/wiki/Gallery">here</a>.</p>
+
+<p>By positioning the ISS in the middle and rotating the earth, making it look like one were riding the Spacestation, a sense of speed can be simulated, both in travelling speed and the speed in which information disappears.</p>
+
+<p>While small circles, representing currently sent tweets, appear around the ISS' position in real time these tweets also pop up at the right side of the screen, which then scroll to the top and disappear as more tweets come in.</p>
+
+<p>The end result should have similarities with the following mockup image:
+<img src="public/assets/img/i-see-streams.png" alt="I-See-Streams-Mockup"></p>
+
+<h2>
+<a id="difficulties" class="anchor" href="#difficulties" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Difficulties</h2>
+
+<p>Because of my first time using D3 (and consequently my very limited knowledge with this JS library) I was sadly dissapointed by the fact that I couldn't finish this project in time and to the extent I had initially imagined.</p>
+
+<p>I managed to get the rotation of the globe, to simulate the "riding" aspect, to work and syncronize it with the data from open-notify.org. This took me quite a while though, since I had tried to output the globe in a "canvas" because of potential performance issues that could have arisen with less powerfull computers. I changed it to "SVG" because I had noticed that the amount of vectors for the globe didn't seem to lower the performance much or at all. Additionally I found working with SVG much easier.</p>
+
+<p>Furthermore I found it difficult working with D3's geo functionalities since the API-Documentation was indeed complete but still confusing. Finding appropriate examples on the web wasn't easy since there weren't all too many or were too difficult for me to understand. I am for example still unable to set a dot at the right longitude and latitude coordinated on the globe to represent the current position of the ISS.</p>
+
+<h2>
+<a id="conclusion" class="anchor" href="#conclusion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion</h2>
+
+<p>In conclusion I actually found working with D3 quite fun.<br>
+Even though I had many frustrating all nighters trying to get D3's geo functionalities to work and wasn't able to finish the project in time I'd like to think that I have learned much about working with JS, Node.js, SVG, D3, and geo-data alltogether.</p>
+
+<p>I'd like to finish this project in the near future (in this form or another) but have to first better my skills to do so.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/miduku">miduku</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
