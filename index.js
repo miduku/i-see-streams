@@ -20,9 +20,9 @@ app.get('/', function(req, res) {
 });
 
 /*
-* get Twitter Data
-* REST API
-*/
+ * setup Twit
+ * REST API
+ */
 var twitterOauth = config.twitter_oauth;
 var T = new Twit({
   consumer_key: twitterOauth.consumer_key,
@@ -34,6 +34,10 @@ var T = new Twit({
 var counter = 0;
 var results = [];
 
+
+/*
+ * ISS position data
+ */
 socket.on('connection', function(client) {
   // log what the client is sending
   client.on('message', function(message) {
@@ -46,6 +50,9 @@ socket.on('connection', function(client) {
 }); // END socket
 
 
+/*
+ * fetch the data from Twitter
+ */
 var timer = setInterval(function() {
   T.get('search/tweets', {
     q: 'hund',

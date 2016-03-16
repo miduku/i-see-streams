@@ -147,9 +147,11 @@ d3.json('assets/json/world-110m.json', function(error, dataWorld) {
         .attr('d', geoPath);
 
       // redraw point
-
+      // ???
 
       // redraw circle
+      // ???
+      //
     }, 5000); // END setInterval
 });
 
