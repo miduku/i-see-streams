@@ -20,6 +20,8 @@ The Globe was realized with *topoJSON* data found [here](https://github.com/mbos
 
 By positioning the ISS in the middle and rotating the earth, making it look like one were riding the Spacestation, a sense of speed can be simulated, both in travelling speed and the speed in which information disappears.
 
+While small circles, representing currently sent tweets, appear around the ISS' position in real time these tweets also pop up at the right side of the screen, which then scroll to the top and disappear as more tweets come in.
+
 The end result should have similarities with the following mockup image:
 ![I-See-Streams-Mockup](public/assets/img/i-see-streams.png)
 
